@@ -60,6 +60,16 @@ def open_assignment_Section(name,SLEEP):
             break
     assignment[j].find_element(By.CSS_SELECTOR,'a').click()
     time.sleep(SLEEP)
+
+
+def maximize_student_number(SLEEP):
+    
+    options = (driver.find_element(By.CSS_SELECTOR,'table.d_gact.d_gd')
+              .find_element(By.CLASS_NAME, 'd2l-select')
+              .find_elements(By.CSS_SELECTOR,'option')
+    )
+    print(options[1].get_attribute('value'),"hi")
+        
         
     
 
@@ -87,7 +97,8 @@ login(url,username,password,1)
 open_course('Computer Software',1)
 open_assignment_dropdown(1,4)
 open_assignment_tab(5)
-open_assignment_Section('assignment 0',5)
+open_assignment_Section('assignment 0',1)
+maximize_student_number(5)
 
 
 # driver.find_element(By.CSS_SELECTOR, f"[title=\"{title}\"]").click()
