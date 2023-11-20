@@ -123,6 +123,7 @@ def enter_mark(mark):
                     .shadow_root.find_element(By.CSS_SELECTOR,'d2l-input-text')
                     .shadow_root.find_element(By.CLASS_NAME,'d2l-input')               
     )
+    input.clear()
     input.send_keys(mark)
 
 def save_draft(SLEEP):
@@ -154,7 +155,6 @@ def back(SLEEP):
     time.sleep(SLEEP)
 
 def enter_comments(comments,SLEEP):
-    # Find the iframe element
     iframe = (
         driver.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation')
         .shadow_root.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation-page')
@@ -164,36 +164,37 @@ def enter_comments(comments,SLEEP):
         .shadow_root.find_element(By.CSS_SELECTOR, 'd2l-htmleditor')
         .shadow_root.find_element(By.ID, 'd2l-uid-35_ifr')
     )
-
-    # Switch to the iframe
     driver.switch_to.frame(iframe)
-
-    # Find the <p> element within the iframe
-    feedback = driver.find_element(By.TAG_NAME, 'p')
+    feedback = driver.find_element(By.TAG_NAME, 'body')
     feedback.clear()
     feedback.send_keys(comments)
     time.sleep(SLEEP)
-
-    # Switch back to the default content if needed
     driver.switch_to.default_content()
 
+#only for 9818 course
+#open based on file name
+def open_student(studen_ids,marks,comments,SLEEP):
+    
+    for j in range (len(studen_ids)):
+        file_name = f"Open {studen_ids[j]}.zip"
+        file = driver.find_element(By.CSS_SELECTOR, f"[title=\"{file_name}\"]").click()
+        time.sleep(SLEEP)
+        enter_mark(marks[j])
+        enter_comments(comments[j],5)
+        update(5)
+        back(5)
+        
+    time.sleep(SLEEP)
+
 
         
         
     
-
-
-
-    
-    
-
-
-
-
 
 username = "mmoeini"
 password = "SSantajen146"
-mark = ''
+course_name = 'Computer Software'
+assignment_name = 'assignment 0'
 student_id = 202293111
 title = f"Open {student_id}.zip"
 url = "https://login.mun.ca/cas/login?service=https%3a%2f%2fonline.mun.ca%2fd2l%2fcustom%2fcas%3ftarget%3d%252fd2l%252fhome"
@@ -207,13 +208,15 @@ data = pd.read_excel(file_path)
 names = data.iloc[:, 0]
 marks = data.iloc[:,1]
 comments = data.iloc[:,2]
+studen_ids = data.iloc[:,3]
 login(url,username,password,1)
-open_course('Computer Software',1)
+open_course(course_name,1)
 open_assignment_dropdown(1,4)
 open_assignment_tab(5)
-open_assignment_Section('assignment 0',1)
+open_assignment_Section(assignment_name,1)
 maximize_student_number(5)
-open_student(names,marks,comments,5)
+# open_student(names,marks,comments,5)
+open_student(studen_ids,marks,comments,5)
 
 
 # driver.find_element(By.CSS_SELECTOR, f"[title=\"{title}\"]").click()
