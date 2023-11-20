@@ -199,7 +199,7 @@ def enter_comments(comments,SLEEP):
 username = ""
 password = ""
 course_name = 'Computer Software'
-assignment_name = 'assignment 0'
+assignment_name = 'assignment 1'
 url = "https://login.mun.ca/cas/login?service=https%3a%2f%2fonline.mun.ca%2fd2l%2fcustom%2fcas%3ftarget%3d%252fd2l%252fhome"
 file_path = "C:\\Users\\Mahdi\\Desktop\\Names.xlsx"
 data = pd.read_excel(file_path)
