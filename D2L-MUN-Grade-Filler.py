@@ -111,9 +111,8 @@ def open_student(names,marks,comments,SLEEP):
         
     time.sleep(SLEEP)
 
-
-#only for 9818 course
 #open based on file name
+#Here as an example the file name is 'student_id.zip' you can modified it per your preferance.
 def open_student(studen_ids,marks,comments,SLEEP):
     
     for j in range (len(studen_ids)):
