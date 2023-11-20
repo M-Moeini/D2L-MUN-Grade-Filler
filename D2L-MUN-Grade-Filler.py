@@ -43,6 +43,16 @@ def open_assignment_tab(SLEEP):
     assignment.send_keys(Keys.ENTER)
     time.sleep(SLEEP)
 
+def open_grades_tab(SLEEP,grade_tab_number):
+    tabs = (driver.find_element(By.CSS_SELECTOR, 'd2l-dropdown-menu[opened]')
+            .find_elements(By.CSS_SELECTOR, 'd2l-menu-item-link')
+            
+)
+    grades = tabs[grade_tab_number].shadow_root.find_element(By.CSS_SELECTOR,"a")
+
+    grades.send_keys(Keys.ENTER)
+    time.sleep(SLEEP)
+
 def open_assignment_dropdown(SLEEP,button_number): 
     outer_div = driver.find_elements(By.CSS_SELECTOR, '.d2l-navigation-s-item')
     dropdown = outer_div[button_number-1].find_element(By.CSS_SELECTOR,'.d2l-navigation-s-group')
@@ -73,7 +83,6 @@ def maximize_student_number(SLEEP):
     )
     options[-1].click()
     time.sleep(SLEEP)
-    print(options[1].text,"hi")
 
 def open_student(names,marks,comments,SLEEP):
 
@@ -96,7 +105,6 @@ def open_student(names,marks,comments,SLEEP):
                         .find_element(By.CSS_SELECTOR,'td')
                         .find_element(By.CSS_SELECTOR,'a')
             )
-            print(names[j],s_name.text,"hi")
             if names[j] in s_name.text:
                 s_name.click()
                 time.sleep(SLEEP)
@@ -188,16 +196,94 @@ def enter_comments(comments,SLEEP):
     time.sleep(SLEEP)
     driver.switch_to.default_content()
 
+def select_assesment(name,SLEEP):
+    table_rows = (driver.find_element(By.ID, 'z_bi')
+        .find_element(By.CSS_SELECTOR,'tbody')
+        .find_elements(By.CSS_SELECTOR,'tr')
+)
+    second_header_flag = False
+    table_headers = table_rows[1].find_elements(By.CSS_SELECTOR,'th')
+    for i in range(len(table_headers)):
+        assesment_name = table_headers[i].find_element(By.CSS_SELECTOR,'d2l-table-col-sort-button').text
+        if name == assesment_name:
+            l=i
+            print(i)
+            print(assesment_name)
+            break
+        elif(i==len(table_headers)-1):
+            second_header_flag = True
+            table_headers_secondary = table_rows[0].find_elements(By.CSS_SELECTOR,'th')
+            for k in range(len(table_headers_secondary)):
+                try:
+                    if table_headers_secondary[k].find_element(By.CSS_SELECTOR, 'd2l-table-col-sort-button').is_displayed():
+                        assesment_name = table_headers_secondary[k].find_element(By.CSS_SELECTOR, 'd2l-table-col-sort-button').text
+                        if name == assesment_name:
+                            l = k
+                            print(k)
+                            print(assesment_name)
+                            break
+                        else:
+                            print("Assessment not found!")
+                except NoSuchElementException:
+                    continue
+
+    if(second_header_flag):
+        dropdwon = (table_headers_secondary[l].find_element(By.CSS_SELECTOR,'d2l-dropdown-context-menu')
+            .shadow_root.find_element(By.CSS_SELECTOR,'d2l-button-icon')
+            .shadow_root.find_element(By.CSS_SELECTOR,'button')
+            )
+        dropdwon.click()
+        
+        options = ( table_headers_secondary[l].find_element(By.CSS_SELECTOR, 'd2l-dropdown-context-menu')
+                    .find_element(By.CSS_SELECTOR,'d2l-dropdown-menu')
+                    .find_element(By.CSS_SELECTOR,'d2l-menu')
+                    .find_elements(By.CSS_SELECTOR,'d2l-menu-item')
+        )
+
+        for i in range(len(options)):
+            if(options[i].get_attribute('aria-label') == 'Enter Grades'):
+                index = i
+                break
+        enter_grades = options[index]
+        enter_grades.click()
+
+
+    else:
+        dropdwon = (table_headers[l].find_element(By.CSS_SELECTOR,'d2l-dropdown-context-menu')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-button-icon')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'button')
+                    )
+        dropdwon.click()
+
+        options = ( table_headers[l].find_element(By.CSS_SELECTOR, 'd2l-dropdown-context-menu')
+                    .find_element(By.CSS_SELECTOR,'d2l-dropdown-menu')
+                    .find_element(By.CSS_SELECTOR,'d2l-menu')
+                    .find_elements(By.CSS_SELECTOR,'d2l-menu-item')
+        )
+
+        for i in range(len(options)):
+            if(options[i].get_attribute('aria-label') == 'Enter Grades'):
+                index = i
+                break
+        enter_grades = options[index]
+        enter_grades.click()
 
 
 
+        
+
+    time.sleep(SLEEP)
+
+
+def enter_grades(SLEEP):
+    maximize_student_number(2)
+    time.sleep(SLEEP)
         
         
     
 
-username = ""
-password = ""
-course_name = 'Controls'
+
+course_name = 'Control'
 assignment_name = 'Lab1'
 url = "https://login.mun.ca/cas/login?service=https%3a%2f%2fonline.mun.ca%2fd2l%2fcustom%2fcas%3ftarget%3d%252fd2l%252fhome"
 file_path = "C:\\Users\\Mahdi\\Desktop\\Names.xlsx"
@@ -215,11 +301,24 @@ driver = webdriver.Chrome(options=edge_options)
 login(url,username,password,1)
 open_course(course_name,1)
 open_assignment_dropdown(1,4)
-open_assignment_tab(5)
-open_assignment_Section(assignment_name,1)
-maximize_student_number(5)
-# open_student(names,marks,comments,5)
-open_student(studen_ids,marks,comments,5)
+open_grades_tab(5,1)
+select_assesment('L3',5)
+enter_grades(5)
+
+
+
+
+
+
+
+
+
+
+# open_assignment_tab(5)
+# open_assignment_Section(assignment_name,1)
+# maximize_student_number(5)
+# # open_student(names,marks,comments,5)
+# open_student(studen_ids,marks,comments,5)
 
 
 driver.quit()
