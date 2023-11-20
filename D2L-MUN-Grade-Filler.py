@@ -142,23 +142,34 @@ open_student(names,5)
 # time.sleep(6)
 
 
+def enter_mark(mark):
+    
+    input= (driver.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-page')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'consistent-evaluation-right-panel')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'consistent-evaluation-right-panel-evaluation')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-right-panel-grade-result')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-labs-d2l-grade-result-presentational')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-grade-result-numeric-score')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-input-number')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-input-text')
+                    .shadow_root.find_element(By.CLASS_NAME,'d2l-input')               
+    )
+    input.send_keys(mark)
 
-# input= (driver.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation')
-#                 .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-page')
-#                 .shadow_root.find_element(By.CSS_SELECTOR,'consistent-evaluation-right-panel')
-#                 .shadow_root.find_element(By.CSS_SELECTOR,'consistent-evaluation-right-panel-evaluation')
-#                 .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-right-panel-grade-result')
-#                 .shadow_root.find_element(By.CSS_SELECTOR,'d2l-labs-d2l-grade-result-presentational')
-#                 .shadow_root.find_element(By.CSS_SELECTOR,'d2l-grade-result-numeric-score')
-#                 .shadow_root.find_element(By.CSS_SELECTOR,'d2l-input-number')
-#                 .shadow_root.find_element(By.CSS_SELECTOR,'d2l-input-text')
-#                 .shadow_root.find_element(By.CLASS_NAME,'d2l-input')               
-# )
-# save_draft = (driver.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation')
-#                 .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-page')
-#                 .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-footer')
-#                 .shadow_root.find_element(By.ID, 'consistent-evaluation-footer-save-draft')
-#                 )
+def save_draft(SLEEP):
+    save_draft = (driver.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation')
+                .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-page')
+                .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-footer')
+                .shadow_root.find_element(By.ID, 'consistent-evaluation-footer-save-draft')
+                )
+    save_draft.click()
+    time.sleep(SLEEP)
+
+
+
+
+
 # time.sleep(1)
 # input.clear()
 # input.send_keys(mark)
