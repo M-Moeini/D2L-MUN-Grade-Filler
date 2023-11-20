@@ -75,21 +75,25 @@ def maximize_student_number(SLEEP):
     time.sleep(SLEEP)
     print(options[1].text,"hi")
 
-def open_student(names,SLEEP):
+def open_student(names,marks,SLEEP):
     student = (driver.find_element(By.CSS_SELECTOR,'d2l-table-wrapper')
                .find_element(By.CSS_SELECTOR,'tbody')
                .find_elements(By.CLASS_NAME,'d_ggl2')
 
     )
-    for name in names():
+    for j in range (len(names)):
         for i in range(len(student)):
             s_name = (student[i].find_element(By.CSS_SELECTOR,'th')
                         .find_element(By.CSS_SELECTOR,'table')
                         .find_element(By.CSS_SELECTOR,'td')
                         .find_element(By.CSS_SELECTOR,'a')
             )
-            if name in s_name.text:
+            print(names[j],s_name.text,"hi")
+            if names[j] in s_name.text:
                 s_name.click()
+                time.sleep(SLEEP)
+                enter_mark(marks[j])
+                update(2)
                 student.remove(student[i])
                 break
             elif(i==len(student)-1):
@@ -100,7 +104,38 @@ def open_student(names,SLEEP):
             # if student[i] == name
             # break
 
+def enter_mark(mark):
+    
+    input= (driver.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-page')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'consistent-evaluation-right-panel')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'consistent-evaluation-right-panel-evaluation')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-right-panel-grade-result')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-labs-d2l-grade-result-presentational')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-grade-result-numeric-score')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-input-number')
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-input-text')
+                    .shadow_root.find_element(By.CLASS_NAME,'d2l-input')               
+    )
+    input.send_keys(mark)
 
+def save_draft(SLEEP):
+    save_draft = (driver.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation')
+                .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-page')
+                .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-footer')
+                .shadow_root.find_element(By.ID, 'consistent-evaluation-footer-save-draft')
+                )
+    save_draft.click()
+    time.sleep(SLEEP)
+
+def update(SLEEP):
+    update = (driver.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation')
+            .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-page')
+            .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-footer')
+            .shadow_root.find_element(By.ID, 'consistent-evaluation-footer-update')
+                )
+    update.click()
+    time.sleep(SLEEP)
         
         
     
@@ -128,43 +163,21 @@ driver = webdriver.Chrome(options=edge_options)
 file_path = "C:\\Users\\Mahdi\\Desktop\\Names.xlsx"  # Replace with your file path
 data = pd.read_excel(file_path)
 names = data.iloc[:, 0]
-
+marks = data.iloc[:,1]
 login(url,username,password,1)
 open_course('Computer Software',1)
 open_assignment_dropdown(1,4)
 open_assignment_tab(5)
 open_assignment_Section('assignment 0',1)
 maximize_student_number(5)
-open_student(names,5)
+open_student(names,marks,5)
 
 
 # driver.find_element(By.CSS_SELECTOR, f"[title=\"{title}\"]").click()
 # time.sleep(6)
 
 
-def enter_mark(mark):
-    
-    input= (driver.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation')
-                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-page')
-                    .shadow_root.find_element(By.CSS_SELECTOR,'consistent-evaluation-right-panel')
-                    .shadow_root.find_element(By.CSS_SELECTOR,'consistent-evaluation-right-panel-evaluation')
-                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-right-panel-grade-result')
-                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-labs-d2l-grade-result-presentational')
-                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-grade-result-numeric-score')
-                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-input-number')
-                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-input-text')
-                    .shadow_root.find_element(By.CLASS_NAME,'d2l-input')               
-    )
-    input.send_keys(mark)
 
-def save_draft(SLEEP):
-    save_draft = (driver.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation')
-                .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-page')
-                .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-footer')
-                .shadow_root.find_element(By.ID, 'consistent-evaluation-footer-save-draft')
-                )
-    save_draft.click()
-    time.sleep(SLEEP)
 
 
 
