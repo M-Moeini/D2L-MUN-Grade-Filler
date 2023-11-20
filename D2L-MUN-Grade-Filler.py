@@ -196,8 +196,8 @@ def enter_comments(comments,SLEEP):
         
     
 
-username = "mmoeini"
-password = "SSantajen146"
+username = ""
+password = ""
 course_name = 'Computer Software'
 assignment_name = 'assignment 0'
 url = "https://login.mun.ca/cas/login?service=https%3a%2f%2fonline.mun.ca%2fd2l%2fcustom%2fcas%3ftarget%3d%252fd2l%252fhome"
