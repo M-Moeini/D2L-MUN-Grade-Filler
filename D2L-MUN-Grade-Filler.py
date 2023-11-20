@@ -6,13 +6,33 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 import time
 
-def login(url,USERNAME,PASSWROD):
+def login(url,USERNAME,PASSWROD,SLEEP):
     driver.get(url)
     username = driver.find_element(By.ID, "username") 
     password = driver.find_element(By.ID, "password") 
     username.send_keys(USERNAME)
     password.send_keys(PASSWROD)
     password.send_keys(Keys.RETURN)  
+    time.sleep(SLEEP)
+
+def Open_course(name,SLEEP):
+    courses = (driver.find_element(By.CSS_SELECTOR, 'd2l-my-courses')
+                .shadow_root.find_element(By.CSS_SELECTOR,'d2l-my-courses-container')
+                .shadow_root.find_element(By.CSS_SELECTOR,'d2l-my-courses-content')
+                .shadow_root.find_element(By.CSS_SELECTOR,'d2l-my-courses-card-grid')
+                .shadow_root.find_elements(By.CSS_SELECTOR,'d2l-enrollment-card')               
+                # .shadow_root.find_element(By.CSS_SELECTOR,'d2l-card')
+    )
+    for i in range(len(courses)):
+        course_name = courses[i].shadow_root.find_element(By.CSS_SELECTOR,'d2l-card').text
+        if name in course_name:
+            j = i
+            break
+        else:
+            print("Course name does not match") 
+    
+
+
 
 
 
@@ -26,16 +46,10 @@ edge_options = webdriver.ChromeOptions()
 edge_options.headless = True
 edge_options.add_argument("--start-fullscreen")
 
-
-
-
-
-
-
-
 driver = webdriver.Chrome(options=edge_options)
+login(url,username,password,10)
+Open_course('Computer Software',5)
 
-login(url,username,password)
 
 # driver.find_element(By.CSS_SELECTOR, f"[title=\"{title}\"]").click()
 # time.sleep(6)
