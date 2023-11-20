@@ -64,11 +64,14 @@ def open_assignment_Section(name,SLEEP):
 
 def maximize_student_number(SLEEP):
     
-    options = (driver.find_element(By.CSS_SELECTOR,'table.d_gact.d_gd')
+    options = (driver.find_element(By.CSS_SELECTOR,'div.d2l-grid-container')
+              .find_element(By.CSS_SELECTOR,'div.d2l-select-container')
               .find_element(By.CLASS_NAME, 'd2l-select')
               .find_elements(By.CSS_SELECTOR,'option')
     )
-    print(options[1].get_attribute('value'),"hi")
+    options[-1].click()
+    time.sleep(SLEEP)
+    print(options[1].text,"hi")
         
         
     
