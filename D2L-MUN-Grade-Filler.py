@@ -75,7 +75,7 @@ def maximize_student_number(SLEEP):
     time.sleep(SLEEP)
     print(options[1].text,"hi")
 
-def open_student(names,marks,SLEEP):
+def open_student(names,marks,comments,SLEEP):
 
     for j in range (len(names)):
         student = (driver.find_element(By.CSS_SELECTOR,'d2l-table-wrapper')
@@ -101,6 +101,7 @@ def open_student(names,marks,SLEEP):
                 s_name.click()
                 time.sleep(SLEEP)
                 enter_mark(marks[j])
+                enter_comments(comments[j],5)
                 update(5)
                 back(5)
                 break
@@ -152,6 +153,31 @@ def back(SLEEP):
     back.send_keys(Keys.ENTER)
     time.sleep(SLEEP)
 
+def enter_comments(comments,SLEEP):
+    # Find the iframe element
+    iframe = (
+        driver.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation')
+        .shadow_root.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation-page')
+        .shadow_root.find_element(By.CSS_SELECTOR, 'consistent-evaluation-right-panel')
+        .shadow_root.find_element(By.CSS_SELECTOR, 'consistent-evaluation-right-panel-evaluation')
+        .shadow_root.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation-right-panel-feedback')
+        .shadow_root.find_element(By.CSS_SELECTOR, 'd2l-htmleditor')
+        .shadow_root.find_element(By.ID, 'd2l-uid-35_ifr')
+    )
+
+    # Switch to the iframe
+    driver.switch_to.frame(iframe)
+
+    # Find the <p> element within the iframe
+    feedback = driver.find_element(By.TAG_NAME, 'p')
+    feedback.clear()
+    feedback.send_keys(comments)
+    time.sleep(SLEEP)
+
+    # Switch back to the default content if needed
+    driver.switch_to.default_content()
+
+
         
         
     
@@ -180,13 +206,14 @@ file_path = "C:\\Users\\Mahdi\\Desktop\\Names.xlsx"  # Replace with your file pa
 data = pd.read_excel(file_path)
 names = data.iloc[:, 0]
 marks = data.iloc[:,1]
+comments = data.iloc[:,2]
 login(url,username,password,1)
 open_course('Computer Software',1)
 open_assignment_dropdown(1,4)
 open_assignment_tab(5)
 open_assignment_Section('assignment 0',1)
 maximize_student_number(5)
-open_student(names,marks,5)
+open_student(names,marks,comments,5)
 
 
 # driver.find_element(By.CSS_SELECTOR, f"[title=\"{title}\"]").click()
