@@ -15,13 +15,12 @@ def login(url,USERNAME,PASSWROD,SLEEP):
     password.send_keys(Keys.RETURN)  
     time.sleep(SLEEP)
 
-def Open_course(name,SLEEP):
+def open_course(name,SLEEP):
     courses = (driver.find_element(By.CSS_SELECTOR, 'd2l-my-courses')
                 .shadow_root.find_element(By.CSS_SELECTOR,'d2l-my-courses-container')
                 .shadow_root.find_element(By.CSS_SELECTOR,'d2l-my-courses-content')
                 .shadow_root.find_element(By.CSS_SELECTOR,'d2l-my-courses-card-grid')
                 .shadow_root.find_elements(By.CSS_SELECTOR,'d2l-enrollment-card')               
-                # .shadow_root.find_element(By.CSS_SELECTOR,'d2l-card')
     )
     for i in range(len(courses)):
         course_name = courses[i].shadow_root.find_element(By.CSS_SELECTOR,'d2l-card').text
@@ -34,16 +33,18 @@ def Open_course(name,SLEEP):
     courses[j].click()
     time.sleep(SLEEP)
 
-def open_assignment(SLEEP):
-    assignment = (driver.find_element(By.CSS_SELECTOR, 'd2l-menu-item-link')
+def open_assignment_tab(SLEEP):
+    assignment = (driver.find_element(By.CSS_SELECTOR, 'd2l-dropdown-menu[opened]')
+                .find_element(By.CSS_SELECTOR, 'd2l-menu-item-link')
                 .shadow_root.find_element(By.CSS_SELECTOR,"a")
-                # .shadow_root.find_element(By.CSS_SELECTOR,'d2l-my-courses-content')
-                # .shadow_root.find_element(By.CSS_SELECTOR,'d2l-my-courses-card-grid')
-                # .shadow_root.find_elements(By.CSS_SELECTOR,'d2l-enrollment-card')               
-                # .shadow_root.find_element(By.CSS_SELECTOR,'d2l-card')
     )
-    print(assignment.get_attribute('tabindex'))
-    assignment.click()
+    assignment.send_keys(Keys.ENTER)
+    time.sleep(SLEEP)
+
+def open_assignment_dropdown(SLEEP,button_number): 
+    outer_div = driver.find_elements(By.CSS_SELECTOR, '.d2l-navigation-s-item')
+    dropdown = outer_div[button_number-1].find_element(By.CSS_SELECTOR,'.d2l-navigation-s-group')
+    dropdown.click()
     time.sleep(SLEEP)
 
     
@@ -64,9 +65,10 @@ edge_options.headless = True
 edge_options.add_argument("--start-fullscreen")
 
 driver = webdriver.Chrome(options=edge_options)
-login(url,username,password,5)
-Open_course('Computer Software',5)
-open_assignment(5)
+login(url,username,password,1)
+open_course('Computer Software',1)
+open_assignment_dropdown(1,4)
+open_assignment_tab(5)
 
 
 # driver.find_element(By.CSS_SELECTOR, f"[title=\"{title}\"]").click()
