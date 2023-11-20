@@ -28,11 +28,25 @@ def Open_course(name,SLEEP):
         if name in course_name:
             j = i
             break
-        elif i = len(course_name)-1:
+        elif i ==len(course_name)-1:
             print("Course name does not match") 
 
     courses[j].click()
     time.sleep(SLEEP)
+
+def open_assignment(SLEEP):
+    assignment = (driver.find_element(By.CSS_SELECTOR, 'd2l-menu-item-link')
+                .shadow_root.find_element(By.CSS_SELECTOR,"a")
+                # .shadow_root.find_element(By.CSS_SELECTOR,'d2l-my-courses-content')
+                # .shadow_root.find_element(By.CSS_SELECTOR,'d2l-my-courses-card-grid')
+                # .shadow_root.find_elements(By.CSS_SELECTOR,'d2l-enrollment-card')               
+                # .shadow_root.find_element(By.CSS_SELECTOR,'d2l-card')
+    )
+    print(assignment.get_attribute('tabindex'))
+    assignment.click()
+    time.sleep(SLEEP)
+
+    
     
 
 
@@ -52,6 +66,7 @@ edge_options.add_argument("--start-fullscreen")
 driver = webdriver.Chrome(options=edge_options)
 login(url,username,password,5)
 Open_course('Computer Software',5)
+open_assignment(5)
 
 
 # driver.find_element(By.CSS_SELECTOR, f"[title=\"{title}\"]").click()
