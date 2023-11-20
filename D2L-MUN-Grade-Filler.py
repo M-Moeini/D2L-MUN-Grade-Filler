@@ -76,13 +76,21 @@ def maximize_student_number(SLEEP):
     print(options[1].text,"hi")
 
 def open_student(names,marks,SLEEP):
-    student = (driver.find_element(By.CSS_SELECTOR,'d2l-table-wrapper')
-               .find_element(By.CSS_SELECTOR,'tbody')
-               .find_elements(By.CLASS_NAME,'d_ggl2')
 
-    )
     for j in range (len(names)):
+        student = (driver.find_element(By.CSS_SELECTOR,'d2l-table-wrapper')
+            .find_element(By.CSS_SELECTOR,'tbody')
+            .find_elements(By.CLASS_NAME,'d_ggl2')
+
+        )
+        print(j)
         for i in range(len(student)):
+            student = (driver.find_element(By.CSS_SELECTOR,'d2l-table-wrapper')
+            .find_element(By.CSS_SELECTOR,'tbody')
+            .find_elements(By.CLASS_NAME,'d_ggl2')
+
+            )
+            print(i)
             s_name = (student[i].find_element(By.CSS_SELECTOR,'th')
                         .find_element(By.CSS_SELECTOR,'table')
                         .find_element(By.CSS_SELECTOR,'td')
@@ -93,16 +101,13 @@ def open_student(names,marks,SLEEP):
                 s_name.click()
                 time.sleep(SLEEP)
                 enter_mark(marks[j])
-                update(2)
-                student.remove(student[i])
+                update(5)
+                back(5)
                 break
             elif(i==len(student)-1):
                 print("Name not found")
         
     time.sleep(SLEEP)
-
-            # if student[i] == name
-            # break
 
 def enter_mark(mark):
     
@@ -136,6 +141,17 @@ def update(SLEEP):
                 )
     update.click()
     time.sleep(SLEEP)
+def back(SLEEP):
+    back = (driver.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation')
+            .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-page')
+            .shadow_root.find_element(By.CSS_SELECTOR,'d2l-consistent-evaluation-nav-bar')
+            .shadow_root.find_element(By.CSS_SELECTOR,'d2l-navigation-link-back')
+            .shadow_root.find_element(By.CSS_SELECTOR,'d2l-navigation-link-icon')
+            .shadow_root.find_element(By.CSS_SELECTOR,'a')   
+    )
+    back.send_keys(Keys.ENTER)
+    time.sleep(SLEEP)
+
         
         
     
