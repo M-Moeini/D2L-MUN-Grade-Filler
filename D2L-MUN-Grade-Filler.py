@@ -28,8 +28,11 @@ def Open_course(name,SLEEP):
         if name in course_name:
             j = i
             break
-        else:
+        elif i = len(course_name)-1:
             print("Course name does not match") 
+
+    courses[j].click()
+    time.sleep(SLEEP)
     
 
 
@@ -47,7 +50,7 @@ edge_options.headless = True
 edge_options.add_argument("--start-fullscreen")
 
 driver = webdriver.Chrome(options=edge_options)
-login(url,username,password,10)
+login(url,username,password,5)
 Open_course('Computer Software',5)
 
 
