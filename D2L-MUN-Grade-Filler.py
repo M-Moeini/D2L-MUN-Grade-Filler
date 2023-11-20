@@ -102,11 +102,29 @@ def open_student(names,marks,comments,SLEEP):
                 time.sleep(SLEEP)
                 enter_mark(marks[j])
                 enter_comments(comments[j],5)
-                update(5)
+                # update(5)
+                save_draft(5)
                 back(5)
                 break
             elif(i==len(student)-1):
                 print("Name not found")
+        
+    time.sleep(SLEEP)
+
+
+#only for 9818 course
+#open based on file name
+def open_student(studen_ids,marks,comments,SLEEP):
+    
+    for j in range (len(studen_ids)):
+        file_name = f"Open {studen_ids[j]}.zip"
+        file = driver.find_element(By.CSS_SELECTOR, f"[title=\"{file_name}\"]").click()
+        time.sleep(SLEEP)
+        enter_mark(marks[j])
+        enter_comments(comments[j],5)
+        # update(5)
+        save_draft(5)
+        back(5)
         
     time.sleep(SLEEP)
 
@@ -171,20 +189,7 @@ def enter_comments(comments,SLEEP):
     time.sleep(SLEEP)
     driver.switch_to.default_content()
 
-#only for 9818 course
-#open based on file name
-def open_student(studen_ids,marks,comments,SLEEP):
-    
-    for j in range (len(studen_ids)):
-        file_name = f"Open {studen_ids[j]}.zip"
-        file = driver.find_element(By.CSS_SELECTOR, f"[title=\"{file_name}\"]").click()
-        time.sleep(SLEEP)
-        enter_mark(marks[j])
-        enter_comments(comments[j],5)
-        update(5)
-        back(5)
-        
-    time.sleep(SLEEP)
+
 
 
         
@@ -195,20 +200,19 @@ username = "mmoeini"
 password = "SSantajen146"
 course_name = 'Computer Software'
 assignment_name = 'assignment 0'
-student_id = 202293111
-title = f"Open {student_id}.zip"
 url = "https://login.mun.ca/cas/login?service=https%3a%2f%2fonline.mun.ca%2fd2l%2fcustom%2fcas%3ftarget%3d%252fd2l%252fhome"
-edge_options = webdriver.ChromeOptions()
-edge_options.headless = True
-edge_options.add_argument("--start-fullscreen")
-
-driver = webdriver.Chrome(options=edge_options)
-file_path = "C:\\Users\\Mahdi\\Desktop\\Names.xlsx"  # Replace with your file path
+file_path = "C:\\Users\\Mahdi\\Desktop\\Names.xlsx"
 data = pd.read_excel(file_path)
 names = data.iloc[:, 0]
 marks = data.iloc[:,1]
 comments = data.iloc[:,2]
 studen_ids = data.iloc[:,3]
+
+edge_options = webdriver.ChromeOptions()
+edge_options.headless = True
+edge_options.add_argument("--start-fullscreen")
+driver = webdriver.Chrome(options=edge_options)
+
 login(url,username,password,1)
 open_course(course_name,1)
 open_assignment_dropdown(1,4)
@@ -218,22 +222,5 @@ maximize_student_number(5)
 # open_student(names,marks,comments,5)
 open_student(studen_ids,marks,comments,5)
 
-
-# driver.find_element(By.CSS_SELECTOR, f"[title=\"{title}\"]").click()
-# time.sleep(6)
-
-
-
-
-
-
-
-
-# time.sleep(1)
-# input.clear()
-# input.send_keys(mark)
-# time.sleep(2)
-# save_draft.click()
-# time.sleep(10)
 
 driver.quit()
