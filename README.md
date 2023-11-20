@@ -22,6 +22,7 @@ This Python script utilizes Selenium to automate the process of entering marks a
 
 4. **Set Credentials:**
     Update the `username` and `password` variables in the script with your credentials for the Memorial University D2L platform.
+    The `URL` should be the home URL of D2L. (No need to change)
 
 5. **Customize Course and Assignment:**
     Modify the `course_name` and `assignment_name` variables in the script to match the specific course and assignment you're grading. You can enter any part of the course name but for the assignment name it should be exactly what you see on the D2L.
