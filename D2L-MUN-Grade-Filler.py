@@ -47,6 +47,24 @@ def open_assignment_dropdown(SLEEP,button_number):
     dropdown.click()
     time.sleep(SLEEP)
 
+def open_assignment_Section(name,SLEEP):
+    assignment = (driver.find_element(By.ID,'z_d')
+                  .find_element(By.CSS_SELECTOR, 'tbody')
+                  .find_elements(By.CSS_SELECTOR, 'tr')
+   
+    )
+    print(len(assignment))
+    for i in range(3,len(assignment)):
+       if name in assignment[3].find_element(By.CSS_SELECTOR,'a').get_attribute('title'):
+            j = i
+            break
+    assignment[j].find_element(By.CSS_SELECTOR,'a').click()
+    time.sleep(SLEEP)
+        
+    
+
+
+
     
     
 
@@ -69,6 +87,7 @@ login(url,username,password,1)
 open_course('Computer Software',1)
 open_assignment_dropdown(1,4)
 open_assignment_tab(5)
+open_assignment_Section('assignment 0',5)
 
 
 # driver.find_element(By.CSS_SELECTOR, f"[title=\"{title}\"]").click()
