@@ -31,7 +31,9 @@ This Python script utilizes Selenium to automate the process of entering marks a
 6. **Choose your goal:**
     - If you wanto to enter the assignment grades in assignment section, pass the excel path to `enter_assignment_marks` function with the course name and assignment name.(Inside `enter_assignment_marks` you can both work with `open_student_files` and  `open_student_names` functions depends on how you want to open the students works )
     - If you want to enter grades in grade section pass the excel path to `enter_grades` function  with course name and assesment name you want to grade.
-    -Check below to get familiar with `course_name`, `assignment_name` and `assesment_name`
+    - Check below to get familiar with `course_name`, `assignment_name` and `assesment_name`
+
+    
     ### Course name
     ![Courses](https://github.com/M-Moeini/D2L-MUN-Grade-Filler/blob/main/Images/Courses.png)
     ### Assignment name
