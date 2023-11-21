@@ -301,15 +301,44 @@ def read_data(PATH):
     comments = data.iloc[:,2]
     studen_ids = data.iloc[:,3]
     return names,marks,comments,studen_ids
+
+def get_classlist(course_name,save_path):
+    df = pd.DataFrame(columns=['fullnames'])
+    open_course(course_name,1)
+    open_assesment_dropdown(1,4)
+    open_grades_tab(5,1)
+        
+    choices = (driver.find_element(By.CSS_SELECTOR,'div.d2l-grid-container')
+                .find_elements(By.CSS_SELECTOR,'div.d2l-select-container')
+    )
+    options = choices[-1].find_element(By.CLASS_NAME, 'd2l-select').find_elements(By.CSS_SELECTOR,'option')        
+    options[-1].click()
+    time.sleep(5/2)
+    rows = (driver.find_element(By.ID,'z_bi')
+            .find_element(By.CSS_SELECTOR,'tbody')
+            .find_elements(By.CSS_SELECTOR,'tr')
+            )
+    for i in range(2,len(rows)):
+        rows = (driver.find_element(By.ID,'z_bi')
+            .find_element(By.CSS_SELECTOR,'tbody')
+            .find_elements(By.CSS_SELECTOR,'tr')
+            )
+        name = rows[i].find_element(By.CSS_SELECTOR,'th').find_element(By.CSS_SELECTOR,'d2l-dropdown-context-menu').get_attribute('text')
+        name = name.replace("Actions for ", "")
+        df.loc[i, 'fullnames'] = name
+
+    df.to_excel(save_path, index=False)
+
     
 
 username = ''
 password = ''
-course_name = 'Computer Software'
+course_name = 'Control'
 assignment_name = 'Assignment 1'
 assement_name = 'L5'
 url = "https://login.mun.ca/cas/login?service=https%3a%2f%2fonline.mun.ca%2fd2l%2fcustom%2fcas%3ftarget%3d%252fd2l%252fhome"
 file_path = "C:\\Users\\Mahdi\\Desktop\\Names.xlsx"
+save_path = "C:\\Users\\Mahdi\\Desktop\\Names2.xlsx"
 
 edge_options = webdriver.ChromeOptions()
 edge_options.headless = True
@@ -319,7 +348,11 @@ driver = webdriver.Chrome(options=edge_options)
 login(url,username,password,1)
 
 # enter_grades(file_path,course_name,assement_name)
-enter_assignment_marks(file_path,course_name,assignment_name)
+# enter_assignment_marks(file_path,course_name,assignment_name)
+get_classlist(course_name,save_path,5)
+
+
+
 
     
 

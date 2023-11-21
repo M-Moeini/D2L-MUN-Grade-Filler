@@ -29,9 +29,11 @@ This Python script utilizes Selenium to automate the process of entering marks a
 
 
 6. **Choose your goal:**
-    - If you wanto to enter the assignment grades in assignment section, pass the excel path to `enter_assignment_marks` function with the course name and assignment name.(Inside `enter_assignment_marks` you can both work with `open_student_files` and  `open_student_names` functions depends on how you want to open the students works )
-    - If you want to enter grades in grade section pass the excel path to `enter_grades` function  with course name and assesment name you want to grade.
+    -1 If you wanto to enter the assignment grades in assignment section, pass the excel path to `enter_assignment_marks` function with the course name and assignment name.(Inside `enter_assignment_marks` you can both work with `open_student_files` and  `open_student_names` functions depends on how you want to open the students works )
+    -2 If you want to enter grades in grade section pass the excel path to `enter_grades` function  with course name and assesment name you want to grade.
+    -3 If you want to get the class list as excel file you can use `get_classlist` function and pass the saving path for the output as well as the course name.
     - Check below to get familiar with `course_name`, `assignment_name` and `assesment_name`
+    
 
 
     ### Course name
@@ -168,6 +170,13 @@ This Python script utilizes Selenium to automate the process of entering marks a
     - Reads data from an Excel file.
     - Parameters:
         - `PATH`: Path to the Excel file.
+
+21. **get_classlist(course_name, save_path, SLEEP):**
+    - Retrieves a class list from a specified course and saves it as an Excel file.
+    - Parameters:
+        - `course_name`: Name of the course to extract the class list from.
+        - `save_path`: File path to save the class list Excel file.
+        - `SLEEP`: Time delay in seconds.
 
 
 ## Note
