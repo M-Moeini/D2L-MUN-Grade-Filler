@@ -219,8 +219,6 @@ def select_assesment(name,SLEEP):
                         assesment_name = table_headers_secondary[k].find_element(By.CSS_SELECTOR, 'd2l-table-col-sort-button').text
                         if name == assesment_name:
                             l = k
-                            print(k)
-                            print(assesment_name)
                             break
                         else:
                             print("Assessment not found!")
@@ -279,21 +277,25 @@ def enter_grades(names,marks,SLEEP):
     maximize_student_number(2)
 
     for i in  range(len(names)):
-        print(names[i])
         title_text = 'Grade for ' + names[i]
         grade = (driver.find_element(By.XPATH, f"//d2l-input-number[contains(@title, '{title_text}')]")
                     .shadow_root.find_element(By.CSS_SELECTOR,'d2l-input-text'))
         mark = str(marks[i])
         grade.send_keys(mark)
-
-
+    save_and_close(5)
+        
+def save_and_close(SLEEP):
+    save_and_close_b = (driver.find_element(By.CSS_SELECTOR,'d2l-floating-buttons')
+                        .find_element(By.XPATH,"//button[text()='Save and Close']"))   
+    save_and_close_b.click()
+    time.sleep(SLEEP/3)
+    yes = driver.find_element(By.XPATH,"//button[text()='Yes']")
+    yes.click()
     time.sleep(SLEEP)
-        
-        
+
     
 
-username = 'mmoeini'
-password = 'SSantajen146'
+
 course_name = 'Control'
 assignment_name = 'Lab1'
 url = "https://login.mun.ca/cas/login?service=https%3a%2f%2fonline.mun.ca%2fd2l%2fcustom%2fcas%3ftarget%3d%252fd2l%252fhome"
