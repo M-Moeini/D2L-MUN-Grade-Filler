@@ -53,21 +53,20 @@ def open_grades_tab(SLEEP,grade_tab_number):
     grades.send_keys(Keys.ENTER)
     time.sleep(SLEEP)
 
-def open_assignment_dropdown(SLEEP,button_number): 
+def open_assesment_dropdown(SLEEP,button_number): 
     outer_div = driver.find_elements(By.CSS_SELECTOR, '.d2l-navigation-s-item')
     dropdown = outer_div[button_number-1].find_element(By.CSS_SELECTOR,'.d2l-navigation-s-group')
     dropdown.click()
     time.sleep(SLEEP)
 
-def open_assignment_Section(name,SLEEP):
+def open_assignment_section(name,SLEEP):
     assignment = (driver.find_element(By.ID,'z_d')
                   .find_element(By.CSS_SELECTOR, 'tbody')
                   .find_elements(By.CSS_SELECTOR, 'tr')
    
     )
-    print(len(assignment))
     for i in range(3,len(assignment)):
-       if name in assignment[3].find_element(By.CSS_SELECTOR,'a').get_attribute('title'):
+       if name in assignment[i].find_element(By.CSS_SELECTOR,'a').get_attribute('title'):
             j = i
             break
     assignment[j].find_element(By.CSS_SELECTOR,'a').click()
@@ -82,46 +81,32 @@ def maximize_student_number(SLEEP):
               .find_elements(By.CSS_SELECTOR,'option')
     )
     options[-1].click()
-    time.sleep(SLEEP)
+    time.sleep(SLEEP/2)
+    maximize_student_number(5)
 
-def open_student(names,marks,comments,SLEEP):
-
-    for j in range (len(names)):
-        student = (driver.find_element(By.CSS_SELECTOR,'d2l-table-wrapper')
-            .find_element(By.CSS_SELECTOR,'tbody')
-            .find_elements(By.CLASS_NAME,'d_ggl2')
-
-        )
-        print(j)
-        for i in range(len(student)):
-            student = (driver.find_element(By.CSS_SELECTOR,'d2l-table-wrapper')
-            .find_element(By.CSS_SELECTOR,'tbody')
-            .find_elements(By.CLASS_NAME,'d_ggl2')
-
-            )
-            print(i)
-            s_name = (student[i].find_element(By.CSS_SELECTOR,'th')
-                        .find_element(By.CSS_SELECTOR,'table')
-                        .find_element(By.CSS_SELECTOR,'td')
-                        .find_element(By.CSS_SELECTOR,'a')
-            )
-            if names[j] in s_name.text:
-                s_name.click()
-                time.sleep(SLEEP)
-                enter_mark(marks[j])
-                enter_comments(comments[j],5)
-                # update(5)
-                save_draft(5)
-                back(5)
-                break
-            elif(i==len(student)-1):
-                print("Name not found")
+def open_student_names(names,marks,comments,SLEEP):
+        
+    for i in  range(len(names)):
+        time.sleep(SLEEP/2)
+        words = names[i].split()
+        reversed_name = ' '.join(reversed(words))
+        formatted_name = reversed_name.replace(' ', ', ')
+        title_text = formatted_name
+        student = (driver.find_element(By.XPATH, f"//a[contains(@title, '{title_text}')]"))
+        student.click()
+        time.sleep(SLEEP)
+        enter_mark(marks[i])
+        enter_comments(comments[i],5)
+        # update(5)
+        save_draft(5)
+        back(5)
         
     time.sleep(SLEEP)
 
+
 #open based on file name
 #Here as an example the file name is 'student_id.zip' you can modified it per your preferance.
-def open_student(studen_ids,marks,comments,SLEEP):
+def open_student_files(studen_ids,marks,comments,SLEEP):
     
     for j in range (len(studen_ids)):
         file_name = f"Open {studen_ids[j]}.zip"
@@ -207,8 +192,6 @@ def select_assesment(name,SLEEP):
         assesment_name = table_headers[i].find_element(By.CSS_SELECTOR,'d2l-table-col-sort-button').text
         if name == assesment_name:
             l=i
-            print(i)
-            print(assesment_name)
             break
         elif(i==len(table_headers)-1):
             second_header_flag = True
@@ -273,7 +256,7 @@ def select_assesment(name,SLEEP):
     time.sleep(SLEEP)
 
 
-def enter_grades(names,marks,SLEEP):
+def enter_grade(names,marks):
     maximize_student_number(2)
 
     for i in  range(len(names)):
@@ -293,18 +276,40 @@ def save_and_close(SLEEP):
     yes.click()
     time.sleep(SLEEP)
 
+def enter_grades(data_path,course_name,assement_name):
+    names,marks,comments = read_data(data_path)
+    open_course(course_name,1)
+    open_assesment_dropdown(1,4)
+    open_grades_tab(5,1)
+    select_assesment(assement_name,1)
+    enter_grade(names,marks)
+
+
+def enter_assignment_marks(data_path,course_name,assignment_name):
+    names,marks,comments,student_ids = read_data(data_path)
+    open_course(course_name,1)
+    open_assesment_dropdown(1,4)
+    open_assignment_tab(5)
+    open_assignment_section(assignment_name,1)
+    # open_student_names(names,marks,comments,5)
+    open_student_files(student_ids,marks,comments,5)
+
+def read_data(PATH):
+    data = pd.read_excel(PATH)
+    names = data.iloc[:, 0]
+    marks = data.iloc[:,1]
+    comments = data.iloc[:,2]
+    studen_ids = data.iloc[:,3]
+    return names,marks,comments,studen_ids
     
 
-
-course_name = 'Control'
-assignment_name = 'Lab1'
+username = 'mmoeini'
+password = 'SSantajen146'
+course_name = 'Computer Software'
+assignment_name = 'Assignment 1'
+assement_name = 'L5'
 url = "https://login.mun.ca/cas/login?service=https%3a%2f%2fonline.mun.ca%2fd2l%2fcustom%2fcas%3ftarget%3d%252fd2l%252fhome"
 file_path = "C:\\Users\\Mahdi\\Desktop\\Names.xlsx"
-data = pd.read_excel(file_path)
-names = data.iloc[:, 0]
-marks = data.iloc[:,1]
-comments = data.iloc[:,2]
-studen_ids = data.iloc[:,3]
 
 edge_options = webdriver.ChromeOptions()
 edge_options.headless = True
@@ -312,24 +317,10 @@ edge_options.add_argument("--start-fullscreen")
 driver = webdriver.Chrome(options=edge_options)
 
 login(url,username,password,1)
-open_course(course_name,1)
-open_assignment_dropdown(1,4)
-open_grades_tab(5,1)
-select_assesment('L3',5)
-enter_grades(names,marks,5)
 
+# enter_grades(file_path,course_name,assement_name)
+enter_assignment_marks(file_path,course_name,assignment_name)
 
-
-
-
-
-
-
-# open_assignment_tab(5)
-# open_assignment_Section(assignment_name,1)
-# maximize_student_number(5)
-# # open_student(names,marks,comments,5)
-# open_student(studen_ids,marks,comments,5)
-
+    
 
 driver.quit()
