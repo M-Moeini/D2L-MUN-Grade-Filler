@@ -303,8 +303,8 @@ def read_data(PATH):
     return names,marks,comments,studen_ids
     
 
-username = 'mmoeini'
-password = 'SSantajen146'
+username = ''
+password = ''
 course_name = 'Computer Software'
 assignment_name = 'Assignment 1'
 assement_name = 'L5'
