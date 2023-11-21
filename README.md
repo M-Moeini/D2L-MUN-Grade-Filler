@@ -36,7 +36,7 @@ This Python script leverages Selenium to automate the meticulous task of enterin
 
 6. **Choose your goal:**
 
-    -1 If you wanto to enter the assignment grades in assignment section, pass the excel path to `enter_assignment_marks` function with the course name and assignment name.(Inside `enter_assignment_marks` you can both work with `open_student_files` and  `open_student_names` functions depends on how you want to open the students works )
+    -1 If you want to to enter the assignment grades in assignment section, pass the excel path to `enter_assignment_marks` function with the course name and assignment name.(Inside `enter_assignment_marks` you can both work with `open_student_files` and  `open_student_names` functions depends on how you want to open the students works )
 
     -2 If you want to enter grades in grade section pass the excel path to `enter_grades` function  with course name and assesment name you want to grade.
 
