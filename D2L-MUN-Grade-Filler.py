@@ -275,14 +275,25 @@ def select_assesment(name,SLEEP):
     time.sleep(SLEEP)
 
 
-def enter_grades(SLEEP):
+def enter_grades(names,marks,SLEEP):
     maximize_student_number(2)
+
+    for i in  range(len(names)):
+        print(names[i])
+        title_text = 'Grade for ' + names[i]
+        grade = (driver.find_element(By.XPATH, f"//d2l-input-number[contains(@title, '{title_text}')]")
+                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-input-text'))
+        mark = str(marks[i])
+        grade.send_keys(mark)
+
+
     time.sleep(SLEEP)
         
         
     
 
-
+username = 'mmoeini'
+password = 'SSantajen146'
 course_name = 'Control'
 assignment_name = 'Lab1'
 url = "https://login.mun.ca/cas/login?service=https%3a%2f%2fonline.mun.ca%2fd2l%2fcustom%2fcas%3ftarget%3d%252fd2l%252fhome"
@@ -303,9 +314,7 @@ open_course(course_name,1)
 open_assignment_dropdown(1,4)
 open_grades_tab(5,1)
 select_assesment('L3',5)
-enter_grades(5)
-
-
+enter_grades(names,marks,5)
 
 
 
