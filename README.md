@@ -1,5 +1,5 @@
 
-# Automating Marks and Feedback Entry on D2L Platform: Memorial University 
+# Automating Grades Entry on D2L Platform: Memorial University 
 
 This Python script utilizes Selenium to automate the process of entering marks and feedback into the D2L platform at Memorial University. It's designed to streamline the workflow for TAs working on grading assignments.
 
@@ -33,7 +33,7 @@ This Python script utilizes Selenium to automate the process of entering marks a
     - If you want to enter grades in grade section pass the excel path to `enter_grades` function  with course name and assesment name you want to grade.
     - Check below to get familiar with `course_name`, `assignment_name` and `assesment_name`
 
-    
+
     ### Course name
     ![Courses](https://github.com/M-Moeini/D2L-MUN-Grade-Filler/blob/main/Images/Courses.png)
     ### Assignment name
