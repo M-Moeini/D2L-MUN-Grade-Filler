@@ -1,7 +1,12 @@
 
 # Automating Grades Entry on D2L Platform: Memorial University 
 
-This Python script utilizes Selenium to automate the process of entering marks and feedback into the D2L platform at Memorial University. It's designed to streamline the workflow for TAs working on grading assignments.
+This Python script leverages Selenium to automate the meticulous task of entering grades, feedback, and extracting class lists within the D2L platform at Memorial University. Designed specifically for Teaching Assistants (TAs), it offers an efficient workflow for grading assignments.
+
+### Key Features:
+- **Automated Entry:** Streamlines the process of entering marks and feedback into assignment sections and grades into the platform's grading section.
+- **Classlist Extraction:** Allows for easy extraction of class lists, simplifying administrative tasks.
+
 
 ## Requirments
 - Python 3.x
