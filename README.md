@@ -193,6 +193,8 @@ This Python script leverages Selenium to automate the meticulous task of enterin
 
 - Ensure network stability and appropriate permissions before running the script to avoid interruptions in data entry.
 - Adjusting the 'SLEEP' parameter significantly to a lower values might lead to incomplete page loading, causing issues for Selenium in locating elements.
+- There is an exception handler for functions looking for student name and file name. If the function can not find the file or the student name it will goes to next iteration and will print the file or student name in the terminal. You should manually take care of these situatons. Usually happens with the names that have ' or -.
+-You can modify the column order in the excel file but should also modify the code in the `read_data` fucntion.
 
 ## Disclaimer
 
