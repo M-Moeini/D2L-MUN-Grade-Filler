@@ -82,24 +82,36 @@ def maximize_student_number(SLEEP):
     )
     options[-1].click()
     time.sleep(SLEEP/2)
-    maximize_student_number(5)
 
 def open_student_names(names,marks,comments,SLEEP):
         
     for i in  range(len(names)):
         time.sleep(SLEEP/2)
         words = names[i].split()
-        reversed_name = ' '.join(reversed(words))
-        formatted_name = reversed_name.replace(' ', ', ')
-        title_text = formatted_name
-        student = (driver.find_element(By.XPATH, f"//a[contains(@title, '{title_text}')]"))
-        student.click()
-        time.sleep(SLEEP)
-        enter_mark(marks[i])
-        enter_comments(comments[i],5)
-        # update(5)
-        save_draft(5)
-        back(5)
+        reversed_name = ' '.join(words[-1:] + words[0:len(words)-1])
+        # formatted_name = reversed_name.replace(' ', ', ', 1)
+        # title_text = formatted_name
+        title_text = reversed_name
+        try:
+            student = driver.find_element(By.XPATH, f"//a[contains(translate(@title, ',', ''), '{title_text}')]")
+            student.click()
+            time.sleep(SLEEP)
+            enter_mark(marks[i])
+            enter_comments(comments[i], 5)
+            save_draft(5)
+            back(5)
+            index = i+1
+            print(str(index) + '-'+f'Student {names[i]} is done.')
+
+        except NoSuchElementException:
+            index = i+1
+            print(str(index) + '-'+f"Student '{title_text}' not found. Moving to the next student.")
+            continue
+
+        except Exception as e:
+            index = i+1
+            print(str(index) + '-'+f"An unexpected exception occurred for student '{title_text}'. Moving to the next student.")
+            continue
         
     time.sleep(SLEEP)
 
@@ -110,13 +122,23 @@ def open_student_files(studen_ids,marks,comments,SLEEP):
     
     for j in range (len(studen_ids)):
         file_name = f"Open {studen_ids[j]}.zip"
-        file = driver.find_element(By.CSS_SELECTOR, f"[title=\"{file_name}\"]").click()
-        time.sleep(SLEEP)
-        enter_mark(marks[j])
-        enter_comments(comments[j],5)
-        # update(5)
-        save_draft(5)
-        back(5)
+        try:
+            file = driver.find_element(By.CSS_SELECTOR, f"[title=\"{file_name}\"]").click()
+            time.sleep(SLEEP)
+            enter_mark(marks[j])
+            enter_comments(comments[j],5)
+            # update(5)
+            save_draft(5)
+            back(5)
+            index = j+1
+            print(str(index) + '-'+ f"file '{file_name}' is done.")
+        except NoSuchElementException:
+            print(str(index) + '-'+f"file '{file_name}' not found. Moving to the next student.")
+            continue
+
+        except Exception as e:
+            print(str(index) + '-'+f"An unexpected exception occurred for file '{file_name}'. Moving to the next student.")
+            continue
         
     time.sleep(SLEEP)
 
@@ -134,7 +156,7 @@ def enter_mark(mark):
                     .shadow_root.find_element(By.CLASS_NAME,'d2l-input')               
     )
     input.clear()
-    input.send_keys(mark)
+    input.send_keys(int(mark))
 
 def save_draft(SLEEP):
     save_draft = (driver.find_element(By.CSS_SELECTOR, 'd2l-consistent-evaluation')
@@ -177,7 +199,7 @@ def enter_comments(comments,SLEEP):
     driver.switch_to.frame(iframe)
     feedback = driver.find_element(By.TAG_NAME, 'body')
     feedback.clear()
-    feedback.send_keys(comments)
+    feedback.send_keys(str(comments))
     time.sleep(SLEEP)
     driver.switch_to.default_content()
 
@@ -258,14 +280,42 @@ def select_assesment(name,SLEEP):
 
 def enter_grade(names,marks):
     maximize_student_number(2)
-
     for i in  range(len(names)):
-        title_text = 'Grade for ' + names[i]
-        grade = (driver.find_element(By.XPATH, f"//d2l-input-number[contains(@title, '{title_text}')]")
-                    .shadow_root.find_element(By.CSS_SELECTOR,'d2l-input-text'))
-        mark = str(marks[i])
-        grade.send_keys(mark)
+        
+        try:
+            time.sleep(1)
+            title_text = 'Grade for ' + names[i]
+            grade = (driver.find_element(By.XPATH, f"//d2l-input-number[contains(@title, '{title_text}')]")
+                        .shadow_root.find_element(By.CSS_SELECTOR,'d2l-input-text')
+                        .shadow_root.find_element(By.CLASS_NAME,'d2l-input-text-container')
+                        .find_element(By.CSS_SELECTOR,'input'))
+            mark = str(marks[i])    
+            grade.clear()
+            grade.send_keys(mark)
+            index = i+1
+            print(str(index) + '-'+ f"Student '{names[i]}' is done.")
+            # if(i%5==0):
+            #     save_grades(5)
+        except NoSuchElementException:
+            index = i+1
+            print(str(index) + '-'+ f"Student '{names[i]}' not found. Moving to the next student.")
+            continue
+
+        except Exception as e:
+            index = i+1
+            print(str(index) + '-'+ f"An unexpected exception occurred for student '{names[i]}'. Moving to the next student.")
+            continue
     save_and_close(5)
+
+def save_grades(SLEEP):
+    save_b = (driver.find_element(By.CSS_SELECTOR,'d2l-floating-buttons')
+                        .find_element(By.XPATH,"//button[text()='Save']"))   
+    save_b.click()
+    time.sleep(SLEEP/3)
+    yes = driver.find_element(By.XPATH,"//button[text()='Yes']")
+    yes.click()
+    time.sleep(SLEEP)
+
         
 def save_and_close(SLEEP):
     save_and_close_b = (driver.find_element(By.CSS_SELECTOR,'d2l-floating-buttons')
@@ -277,7 +327,7 @@ def save_and_close(SLEEP):
     time.sleep(SLEEP)
 
 def enter_grades(data_path,course_name,assement_name):
-    names,marks,comments = read_data(data_path)
+    names,marks,comments,student_ids = read_data(data_path)
     open_course(course_name,1)
     open_assesment_dropdown(1,4)
     open_grades_tab(5,1)
@@ -286,20 +336,23 @@ def enter_grades(data_path,course_name,assement_name):
 
 
 def enter_assignment_marks(data_path,course_name,assignment_name):
+    # names,marks,comments,student_ids = read_data(data_path)
     names,marks,comments,student_ids = read_data(data_path)
+    # comments = ''
     open_course(course_name,1)
     open_assesment_dropdown(1,4)
     open_assignment_tab(5)
     open_assignment_section(assignment_name,1)
-    # open_student_names(names,marks,comments,5)
-    open_student_files(student_ids,marks,comments,5)
+    open_student_names(names,marks,comments,5)
+    # open_student_files(student_ids,marks,comments,5)
 
 def read_data(PATH):
     data = pd.read_excel(PATH)
+    data = data.iloc[:,:].reset_index(drop=True)
     names = data.iloc[:, 0]
-    marks = data.iloc[:,1]
-    comments = data.iloc[:,2]
-    studen_ids = data.iloc[:,3]
+    marks = data.iloc[:,8]
+    comments = data.iloc[:,8]
+    studen_ids = data.iloc[:,8]
     return names,marks,comments,studen_ids
 
 def get_classlist(course_name,save_path):
@@ -334,10 +387,10 @@ def get_classlist(course_name,save_path):
 username = ''
 password = ''
 course_name = 'Control'
-assignment_name = 'Assignment 1'
-assement_name = 'L5'
+assignment_name = 'Lab8'
+assement_name = 'L8'
 url = "https://login.mun.ca/cas/login?service=https%3a%2f%2fonline.mun.ca%2fd2l%2fcustom%2fcas%3ftarget%3d%252fd2l%252fhome"
-file_path = "C:\\Users\\Mahdi\\Desktop\\Names.xlsx"
+file_path = "C:\\Users\\Mahdi\\Desktop\\Names2.xlsx"
 save_path = "C:\\Users\\Mahdi\\Desktop\\Names2.xlsx"
 
 edge_options = webdriver.ChromeOptions()
@@ -347,9 +400,10 @@ driver = webdriver.Chrome(options=edge_options)
 
 login(url,username,password,1)
 
-# enter_grades(file_path,course_name,assement_name)
+
+enter_grades(file_path,course_name,assement_name)
 # enter_assignment_marks(file_path,course_name,assignment_name)
-get_classlist(course_name,save_path,5)
+# get_classlist(course_name,save_path,5)
 
 
 
