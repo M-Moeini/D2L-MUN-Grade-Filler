@@ -386,12 +386,12 @@ def get_classlist(course_name,save_path):
 
 username = ''
 password = ''
-course_name = 'Control'
-assignment_name = 'Lab8'
-assement_name = 'L8'
+course_name = ''
+assignment_name = ''
+assement_name = ''
 url = "https://login.mun.ca/cas/login?service=https%3a%2f%2fonline.mun.ca%2fd2l%2fcustom%2fcas%3ftarget%3d%252fd2l%252fhome"
-file_path = "C:\\Users\\Mahdi\\Desktop\\Names2.xlsx"
-save_path = "C:\\Users\\Mahdi\\Desktop\\Names2.xlsx"
+file_path = ""
+save_path = ""
 
 edge_options = webdriver.ChromeOptions()
 edge_options.headless = True
