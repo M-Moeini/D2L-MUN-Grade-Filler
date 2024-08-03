@@ -199,3 +199,12 @@ This Python script leverages Selenium to automate the meticulous task of enterin
 ## Disclaimer
 
 - Use this script responsibly and in accordance with the policies of Memorial University. It's recommended to review the entered data for accuracy after the script execution.
+
+## Contribution
+Feel free to fork this repository and contribute by submitting a pull request. For major changes, please open an issue first to discuss what you would like to change.
+
+## Contact
+- **Mahdi Moeini**
+  - **Email**: [mmoeini@mun.ca](mailto:mmoeini@mun.ca)
+  - **LinkedIn**: [linkedin.com/in/mmoeini](https://linkedin.com/in/mmoeini)
+  - **GitHub**: [m-moeini.github.io](https://m-moeini.github.io)
